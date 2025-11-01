@@ -1,0 +1,231 @@
+esphome:
+  name: "light-charlieplex"
+  friendly_name: Light Charlieplex
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+substitutions:
+  # Pin assignments (ESP32-C3 SuperMini)
+  # Safe pins: 0-10, 20-21
+  # Avoid: 8 (onboard LED), 20-21 if using UART
+  pin_a: "5"
+  pin_b: "6"
+  pin_c: "7"
+
+  # Pattern sequences - LED numbering guide:
+  # 1-6 = LED (Channel) number to light up
+  # 0 = All CHannels  off
+  # Example: "1, 0, 2, 0" = blink Channel 1, pause, blink Channel 2, pause
+
+  # === PATTERN DEFINITIONS ===
+  # Pattern 1
+  name_1: Forward
+  sequence_1: "1, 2, 3, 4, 5, 6, 0"
+  length_1: "7"
+  
+  # Pattern 2
+  name_2: Reverse
+  sequence_2: "6, 5, 4, 3, 2, 1, 0"
+  length_2: "7"
+  
+  # Pattern 3
+  name_3: KnightRider
+  sequence_3: "1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1"
+  length_3: "12"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  
+logger:
+api:
+ota:
+  - platform: esphome
+
+# ====================================
+# HERE BE DRAGONS - Don't poke them
+# ====================================
+
+switch:
+  - platform: template
+    name: $name_1
+    id: switch_1
+    optimistic: true
+    turn_on_action:
+      - switch.turn_off: switch_2
+      - switch.turn_off: switch_3
+      - lambda: |-
+          id(current_seq) = id(seq_1);
+          id(current_seq_length) = id(seq_1_len);
+          id(pattern_active) = true;
+          id(sequence_index) = 0;
+          id(last_step_time) = millis();
+    turn_off_action:
+      - lambda: |-
+          id(pattern_active) = false;
+
+  - platform: template
+    name: $name_2
+    id: switch_2
+    optimistic: true
+    turn_on_action:
+      - switch.turn_off: switch_1
+      - switch.turn_off: switch_3
+      - lambda: |-
+          id(current_seq) = id(seq_2);
+          id(current_seq_length) = id(seq_2_len);
+          id(pattern_active) = true;
+          id(sequence_index) = 0;
+          id(last_step_time) = millis();
+    turn_off_action:
+      - lambda: |-
+          id(pattern_active) = false;
+
+  - platform: template
+    name: $name_3
+    id: switch_3
+    optimistic: true
+    turn_on_action:
+      - switch.turn_off: switch_1
+      - switch.turn_off: switch_2
+      - lambda: |-
+          id(current_seq) = id(seq_3);
+          id(current_seq_length) = id(seq_3_len);
+          id(pattern_active) = true;
+          id(sequence_index) = 0;
+          id(last_step_time) = millis();
+    turn_off_action:
+      - lambda: |-
+          id(pattern_active) = false;
+
+number:
+  - platform: template
+    name: "Speed"
+    id: sequence_speed
+    min_value: 1
+    max_value: 100
+    step: 5
+    initial_value: 50
+    optimistic: true
+    unit_of_measurement: "%"
+    icon: "mdi:speedometer"
+
+button:
+  - platform: template
+    name: "All Stop"
+    icon: "mdi:stop-circle-outline"
+    on_press:
+      - switch.turn_off: switch_1
+      - switch.turn_off: switch_2
+      - switch.turn_off: switch_3
+      - lambda: |-
+          id(pattern_active) = false;
+          id(sequence_index) = 0;
+          pinMode(${pin_a}, INPUT);
+          pinMode(${pin_b}, INPUT);
+          pinMode(${pin_c}, INPUT);
+
+globals:
+  # Pattern sequences - using substitutions
+  - id: seq_1
+    type: int[${length_1}]
+    initial_value: "{${sequence_1}}"
+  - id: seq_1_len
+    type: const int
+    initial_value: "${length_1}"
+    
+  - id: seq_2
+    type: int[${length_2}]
+    initial_value: "{${sequence_2}}"
+  - id: seq_2_len
+    type: const int
+    initial_value: "${length_2}"
+    
+  - id: seq_3
+    type: int[${length_3}]
+    initial_value: "{${sequence_3}}"
+  - id: seq_3_len
+    type: const int
+    initial_value: "${length_3}"
+  
+  # Pattern control
+  - id: current_seq
+    type: int*
+    initial_value: "nullptr"
+  - id: current_seq_length
+    type: int
+    initial_value: "6"
+  - id: pattern_active
+    type: bool
+    initial_value: "false"
+  - id: last_step_time
+    type: unsigned long
+    initial_value: "0"
+  - id: sequence_index
+    type: int
+    initial_value: "0"
+
+interval:
+  - interval: 10ms
+    then:
+      - lambda: |-
+          // Pin state structure for clearer code
+          struct PinState {
+            int pin_number;
+            int mode;      // 1=OUTPUT, 0=INPUT
+            bool state;    // HIGH/LOW (ignored if mode=0)
+          };
+
+          // Charlieplexing configuration for 6 LEDs using 3 pins
+          static const PinState led_configs[6][3] = {
+            {{${pin_a},1,true},  {${pin_c},1,false}, {${pin_b},0,false}},  // LED 1
+            {{${pin_a},1,false}, {${pin_c},1,true},  {${pin_b},0,false}},  // LED 2
+            {{${pin_b},1,true},  {${pin_c},1,false}, {${pin_a},0,false}},  // LED 3
+            {{${pin_b},1,false}, {${pin_c},1,true},  {${pin_a},0,false}},  // LED 4
+            {{${pin_a},1,true},  {${pin_b},1,false}, {${pin_c},0,false}},  // LED 5
+            {{${pin_a},1,false}, {${pin_b},1,true},  {${pin_c},0,false}}   // LED 6
+          };
+
+          if (id(pattern_active) && id(current_seq) != nullptr) {
+            unsigned long now = millis();
+            
+            // Convert speed percentage to delay (inverted relationship)
+            int delay_ms = 210 - (id(sequence_speed).state * 2);
+            
+            // Handle pattern sequence timing
+            if (now - id(last_step_time) >= delay_ms) {
+              id(sequence_index) = (id(sequence_index) + 1) % id(current_seq_length);
+              id(last_step_time) = now;
+            }
+            
+            // Get current value from sequence
+            int led_num = id(current_seq)[id(sequence_index)];
+            
+            // Check if this is a "all off" step (value = 0)
+            if (led_num == 0) {
+              // Turn all LEDs off
+              pinMode(${pin_a}, INPUT);
+              pinMode(${pin_b}, INPUT);
+              pinMode(${pin_c}, INPUT);
+            } else {
+              // Normal LED display (convert 1-based to 0-based)
+              int led = led_num - 1;
+              
+              // Configure pins for the current LED
+              for (int i = 0; i < 3; i++) {
+                const PinState& pin = led_configs[led][i];
+                pinMode(pin.pin_number, pin.mode ? OUTPUT : INPUT);
+                if (pin.mode == 1) {
+                  digitalWrite(pin.pin_number, pin.state ? HIGH : LOW);
+                }
+              }
+            }
+          } else {
+            // Pattern not active - all pins high impedance
+            pinMode(${pin_a}, INPUT);
+            pinMode(${pin_b}, INPUT);
+            pinMode(${pin_c}, INPUT);
+          }
