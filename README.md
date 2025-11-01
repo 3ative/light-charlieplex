@@ -6,7 +6,7 @@
 - LED False Eyelashes: [AliExpress](https://s.click.aliexpress.com/e/_c3HGj8K3)
 
 #### *Code-y Bits*
-- ESPHome Code: [light-charlieplex.yaml](https://github.com/3ative/ultimate-fan-project-v4/blob/main/ultimate-fan-project-V4.yaml)
+- ESPHome Code: [light-charlieplex.yaml](https://github.com/3ative/light-charlieplex/blob/main/light-charlieplex.yaml)
 
 ## ✨ Features
 - 6 LEDs from 3 pins - Because math is beautiful
