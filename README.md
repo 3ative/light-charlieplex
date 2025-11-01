@@ -1,20 +1,20 @@
 # light-charlieplex
 🐉 Charlieplex LED Lashes - 6 LEDs, 3 Pins, Infinite Possibilities!
 
-##### Parts List:
+#### Parts List:
 - 3 x 330Ω 1/4 Watt Resistors
 - LED False Eyelashes: [AliExpress](https://s.click.aliexpress.com/e/_c3HGj8K3)
 
 #### *Code-y Bits*
 - ESPHome Code: [light-charlieplex.yaml](https://github.com/3ative/light-charlieplex/blob/main/light-charlieplex.yaml)
 
-## ✨ Features
+#### ✨ Features
 - 6 LEDs from 3 pins - Because math is beautiful
 - 3 Pre-programmed patterns - Forward, Reverse, and KnightRider
 - Adjustable speed - From "sleepy" to "caffeinated"
 - Easy to customize - Just edit the patterns at the top!
 
-## Example Patterns:
+#### Example Patterns:
 ```yaml
 # Twinkle
 sequence: "1, 0, 0, 3, 0, 0, 5, 0, 0, 2, 0, 0, 4, 0, 0, 6, 0, 0"
