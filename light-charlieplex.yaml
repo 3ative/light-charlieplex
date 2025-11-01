@@ -11,9 +11,9 @@ substitutions:
   # Pin assignments (ESP32-C3 SuperMini)
   # Safe pins: 0-10, 20-21
   # Avoid: 8 (onboard LED), 20-21 if using UART
-  pin_a: "5"
-  pin_b: "6"
-  pin_c: "7"
+  pin_a: "5" #Red
+  pin_b: "6" #Green
+  pin_c: "7" #Blue 
 
   # Pattern sequences - LED numbering guide:
   # 1-6 = LED (Channel) number to light up
@@ -181,12 +181,12 @@ interval:
 
           // Charlieplexing configuration for 6 LEDs using 3 pins
           static const PinState led_configs[6][3] = {
-            {{${pin_a},1,true},  {${pin_c},1,false}, {${pin_b},0,false}},  // LED 1
-            {{${pin_a},1,false}, {${pin_c},1,true},  {${pin_b},0,false}},  // LED 2
-            {{${pin_b},1,true},  {${pin_c},1,false}, {${pin_a},0,false}},  // LED 3
-            {{${pin_b},1,false}, {${pin_c},1,true},  {${pin_a},0,false}},  // LED 4
-            {{${pin_a},1,true},  {${pin_b},1,false}, {${pin_c},0,false}},  // LED 5
-            {{${pin_a},1,false}, {${pin_b},1,true},  {${pin_c},0,false}}   // LED 6
+            {{${pin_a},1,true},  {${pin_b},1,false}, {${pin_c},0,false}},  // LED 1
+            {{${pin_a},1,false}, {${pin_b},1,true},  {${pin_c},0,false}},  // LED 2
+            {{${pin_c},1,true},  {${pin_b},1,false}, {${pin_a},0,false}},  // LED 3
+            {{${pin_c},1,false}, {${pin_b},1,true},  {${pin_a},0,false}},  // LED 4
+            {{${pin_a},1,true},  {${pin_c},1,false}, {${pin_b},0,false}},  // LED 5
+            {{${pin_a},1,false}, {${pin_c},1,true},  {${pin_b},0,false}}   // LED 6
           };
 
           if (id(pattern_active) && id(current_seq) != nullptr) {
