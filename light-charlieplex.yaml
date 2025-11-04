@@ -11,13 +11,14 @@ substitutions:
   # Pin assignments (ESP32-C3 SuperMini)
   # Safe pins: 0-10, 20-21
   # Avoid: 8 (onboard LED), 20-21 if using UART
+
   pin_a: "5" #Red
   pin_b: "6" #Green
   pin_c: "7" #Blue 
 
   # Pattern sequences - LED numbering guide:
   # 1-6 = LED (Channel) number to light up
-  # 0 = All CHannels  off
+  # 0 = All Channels  off
   # Example: "1, 0, 2, 0" = blink Channel 1, pause, blink Channel 2, pause
 
   # === PATTERN DEFINITIONS ===
@@ -35,6 +36,11 @@ substitutions:
   name_3: KnightRider
   sequence_3: "1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1"
   length_3: "12"
+
+  # Pattern 4
+  name_4: Random
+  sequence_4: "4, 1, 6, 3, 2, 5, 1, 6, 4, 3, 2, 5"
+  length_4: "12"
 
 wifi:
   ssid: !secret wifi_ssid
@@ -57,6 +63,7 @@ switch:
     turn_on_action:
       - switch.turn_off: switch_2
       - switch.turn_off: switch_3
+      - switch.turn_off: switch_4
       - lambda: |-
           id(current_seq) = id(seq_1);
           id(current_seq_length) = id(seq_1_len);
@@ -74,6 +81,7 @@ switch:
     turn_on_action:
       - switch.turn_off: switch_1
       - switch.turn_off: switch_3
+      - switch.turn_off: switch_4
       - lambda: |-
           id(current_seq) = id(seq_2);
           id(current_seq_length) = id(seq_2_len);
@@ -91,9 +99,28 @@ switch:
     turn_on_action:
       - switch.turn_off: switch_1
       - switch.turn_off: switch_2
+      - switch.turn_off: switch_4
       - lambda: |-
           id(current_seq) = id(seq_3);
           id(current_seq_length) = id(seq_3_len);
+          id(pattern_active) = true;
+          id(sequence_index) = 0;
+          id(last_step_time) = millis();
+    turn_off_action:
+      - lambda: |-
+          id(pattern_active) = false;
+
+  - platform: template
+    name: $name_4
+    id: switch_4
+    optimistic: true
+    turn_on_action:
+      - switch.turn_off: switch_1
+      - switch.turn_off: switch_2
+      - switch.turn_off: switch_3
+      - lambda: |-
+          id(current_seq) = id(seq_4);
+          id(current_seq_length) = id(seq_4_len);
           id(pattern_active) = true;
           id(sequence_index) = 0;
           id(last_step_time) = millis();
@@ -150,6 +177,13 @@ globals:
   - id: seq_3_len
     type: const int
     initial_value: "${length_3}"
+
+  - id: seq_4
+    type: int[${length_4}]
+    initial_value: "{${sequence_4}}"
+  - id: seq_4_len
+    type: const int
+    initial_value: "${length_4}"
   
   # Pattern control
   - id: current_seq
