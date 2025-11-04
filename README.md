@@ -1,5 +1,5 @@
 # light-charlieplex
-🐉 Charlieplex LED Lashes - 6 LEDs, 3 Pins, Infinite Possibilities!
+🐉 ESPHome-ing Charlieplexed LED of the "_LED Whimpers_" Lashes - 6 LEDs, 3 GPIOs, Custom Patterns Infinite Possibilities!
 
 #### Parts List:
 - 3 x 330Ω 1/4 Watt Resistors
@@ -9,10 +9,10 @@
 - ESPHome Code: [light-charlieplex.yaml](https://github.com/3ative/light-charlieplex/blob/main/light-charlieplex.yaml)
 
 #### ✨ Features
-- 6 LEDs from 3 pins - Because math is beautiful
-- 3 Pre-programmed patterns - Forward, Reverse, and KnightRider
+- 6 LEDs from 3 pins - Because maths is beautiful
+- 4 Pre-programmed patterns - Forward, Reverse, KnightRider, and Random
 - Adjustable speed - From "sleepy" to "caffeinated"
-- Easy to customize - Just edit the patterns at the top!
+- Easy to customize - Just edit the Patterns and Names in the ``substitutions:`` section!
 
 #### Example Patterns:
 ```yaml
@@ -28,6 +28,7 @@ sequence: "1, 1, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 6"
 # Heartbeat
 sequence: "1, 1, 0, 1, 1, 0, 0, 0, 0, 0"
 ```
+Note: Remember to adjust the ``length_n: "X"`` with the number of steps
 
 ---
 #### YouTube tutorial: [Ultimate Fan Project v4.0](https://youtu.be/jFA75R_Z6gE)
