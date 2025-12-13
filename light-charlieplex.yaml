@@ -1,6 +1,6 @@
 esphome:
-  name: "light-charlieplex"
-  friendly_name: Light Charlieplex
+  name: "light-lashes-blue"
+  friendly_name: Light Lashes Blue
 
 esp32:
   board: esp32-c3-devkitm-1
@@ -23,29 +23,30 @@ substitutions:
 
   # === PATTERN DEFINITIONS ===
   # Pattern 1
-  name_1: Forward
+  name_1: "Pattern 1: Forward"
   sequence_1: "1, 2, 3, 4, 5, 6, 0"
   length_1: "7"
   
   # Pattern 2
-  name_2: Reverse
+  name_2: "Pattern 2: Reverse"
   sequence_2: "6, 5, 4, 3, 2, 1, 0"
   length_2: "7"
   
   # Pattern 3
-  name_3: KnightRider
+  name_3: "Pattern 3: KnightRider"
   sequence_3: "1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1"
   length_3: "12"
 
   # Pattern 4
-  name_4: Random
+  name_4: "Pattern 4: Random"
   sequence_4: "4, 1, 6, 3, 2, 5, 1, 6, 4, 3, 2, 5"
   length_4: "12"
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  
+  min_auth_mode: WPA2
+
 logger:
 api:
 ota:
