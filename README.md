@@ -20,8 +20,6 @@
 #### YouTube tutorial: [Ultimate Fan Project v4.0](https://youtu.be/jFA75R_Z6gE)
 ---
 
----
-
 <div align="center">
 
 ### 💖 Support This Project
