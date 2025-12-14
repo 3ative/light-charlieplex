@@ -43,7 +43,7 @@ Found this useful? Want to say thanks and fuel future creations?
       <a href="https://www.patreon.com/3ative">
         <img src="https://img.shields.io/badge/Patreon-Become%20a%20Patron-red.svg?style=for-the-badge&logo=patreon&logoColor=white" alt="Patreon"/>
         <br/>
-        <b>🎨 Join on Patreon</b>
+        <b>💖 Join on Patreon</b>
       </a>
     </td>
   </tr>
