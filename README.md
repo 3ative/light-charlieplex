@@ -17,7 +17,7 @@
 #### Other Info
 ![Wire Truth Table](https://github.com/user-attachments/assets/abb0340e-4fe1-4fb1-be39-856605b38bc2)
 
-#### YouTube tutorial: [LED 'Whisper' Lashes](https://youtu.be/jFA75R_Z6gE)
+#### YouTube tutorial: [LED 'Whisper' Lashes](https://youtu.be/giC2Mbli0LI)
 ---
 
 <div align="center">
