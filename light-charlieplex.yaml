@@ -149,6 +149,7 @@ button:
       - switch.turn_off: switch_1
       - switch.turn_off: switch_2
       - switch.turn_off: switch_3
+      - switch.turn_off: switch_4
       - lambda: |-
           id(pattern_active) = false;
           id(sequence_index) = 0;
