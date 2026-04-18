@@ -1,5 +1,5 @@
 # light-charlieplex
-🐉 Charlieplex LED Lashes - 6 LEDs, 3 Pins, Infinite Possibilities!
+🐉 Charlieplex LED Lashes - 6 LEDs, 3 Pins, Endless Possibilities!
 
 #### Parts List:
 - 3 x 330Ω 1/4 Watt Resistors
