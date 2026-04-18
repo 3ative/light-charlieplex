@@ -3,7 +3,7 @@
 
 #### Parts List:
 - 3 x 330Ω 1/4 Watt Resistors
-- LED False Eyelashes: [AliExpress](https://s.click.aliexpress.com/e/_c3HGj8K3)
+- LED False Eyelashes: [AliExpress](https://s.click.aliexpress.com/e/_c3dOW6iZ)
 
 #### *Code-y Bits*
 - ESPHome Code: [light-charlieplex.yaml](https://github.com/3ative/light-charlieplex/blob/main/light-charlieplex.yaml)
