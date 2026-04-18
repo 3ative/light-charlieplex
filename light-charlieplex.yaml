@@ -138,6 +138,7 @@ number:
     step: 5
     initial_value: 50
     optimistic: true
+    mode: slider
     unit_of_measurement: "%"
     icon: "mdi:speedometer"
 
